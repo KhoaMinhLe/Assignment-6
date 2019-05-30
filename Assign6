@@ -1,0 +1,128 @@
+//Created by: Khoa
+//This program is the game of 21.
+
+import java.util.*;
+
+public class Assign6 {
+	
+	public static int drawCard() {
+		Random rand = new Random();
+		int numberCard = rand.nextInt(10);
+		return numberCard = numberCard + 1;
+		
+	}
+	
+	public class Player{
+		int[] hands = new int[5];
+		String name;
+		
+		public Player(String playerName) {
+			for (int i = 0; i < 5; i++) {
+				hands[i] = 0;
+			}
+			name = playerName;
+		}
+		
+		public void addCard(int aCard, int index) {
+			hands[index] = aCard;
+			
+		}
+		
+		public int sumCards() {
+			int tmpSum = 0;
+			for (int i = 0; i < 5; i++) {
+				if (hands[i] == 0) {
+					break;
+				}
+				if (hands[i] == 1) {
+					if ((tmpSum + 11) > 21) {
+						tmpSum = tmpSum + 1;
+					} else {
+						tmpSum = tmpSum + 11;
+					}
+				} else {
+					tmpSum = tmpSum + hands[i];
+				}
+			}
+			return tmpSum;
+		}
+		public void printHands() {
+			System.out.print(name + ": ");
+			for (int i = 0; i < 5; i++) {
+				if (hands[i] == 0) {
+					break;
+				}
+				System.out.print(hands[i] + " ");
+			}
+			System.out.println();
+		}
+	}
+	
+	Player player1, dealer;
+	
+	Assign6(){
+		player1 = new Player("Player1");
+		dealer = new Player("Dealer");
+	}
+
+	public static void main(String[] args) {
+		
+		int playerDone = 0, dealerDone = 0;
+		int i = 0;
+		int playerCard = 0, dealerCard = 0, playerSum = 0, dealerSum = 0;
+		String input = "";
+		
+		Assign6 game = new Assign6();
+		
+		for (i = 0; i < 2; i++) {
+			playerCard = drawCard();
+			game.player1.addCard(playerCard, i);
+			dealerCard = drawCard();
+			game.dealer.addCard(dealerCard, i);
+		}
+		game.player1.printHands();
+		game.dealer.printHands();
+		
+		dealerSum = game.dealer.sumCards();
+		
+		while ((playerDone != 1) && (dealerDone != 1)) {
+			//Player's turn.
+			System.out.println("Would you like to take another card?");
+			Scanner userinput = new Scanner(System.in);
+			input = userinput.next();
+			if (input.equals("no")) {
+				playerDone = 1;
+				userinput.close();
+			} else if (input.equals("yes")) {
+				playerCard = drawCard();
+				game.player1.addCard(playerCard, i);
+			}
+			//Dealer's turn.
+			if (dealerSum < 17) {
+				dealerCard = drawCard();
+				game.dealer.addCard(dealerCard, i);
+				dealerSum = game.dealer.sumCards();
+			} else {
+				dealerDone = 1;
+			}
+			i++;
+			if (i == 5)
+				break;
+			
+			game.player1.printHands();
+			game.dealer.printHands();
+		}
+		playerSum = game.player1.sumCards();
+		
+		if (playerSum > dealerSum) {
+			System.out.println("Player total cards: " + game.player1.sumCards());
+			System.out.println("Dealer total cards: " + game.dealer.sumCards());
+			System.out.println("You win!");
+		} else {
+			System.out.println("Player total cards: " + game.player1.sumCards());
+			System.out.println("Dealer total cards: " + game.dealer.sumCards());
+			System.out.println("You lose...");
+		}
+	}
+
+}
