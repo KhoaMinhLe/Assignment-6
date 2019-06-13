@@ -98,7 +98,7 @@ public class Assign6 {
 				game.player1.addCard(playerCard, i);
 			}
 			//Dealer's turn.
-			if (dealerSum < 17) {
+			if (input.equals("yes")) {
 				dealerCard = drawCard();
 				game.dealer.addCard(dealerCard, i);
 				dealerSum = game.dealer.sumCards();
@@ -114,14 +114,27 @@ public class Assign6 {
 		}
 		playerSum = game.player1.sumCards();
 		
+		System.out.println("Player total cards: " + game.player1.sumCards());
+		System.out.println("Dealer total cards: " + game.dealer.sumCards());
+		
 		if (playerSum > dealerSum) {
-			System.out.println("Player total cards: " + game.player1.sumCards());
-			System.out.println("Dealer total cards: " + game.dealer.sumCards());
-			System.out.println("You win!");
-		} else {
-			System.out.println("Player total cards: " + game.player1.sumCards());
-			System.out.println("Dealer total cards: " + game.dealer.sumCards());
-			System.out.println("You lose...");
+			if (playerSum > 21 ) {
+				System.out.println("You busted!");
+			} else if (dealerSum > 21 ) {
+				System.out.println("Draw!");
+			}else if (playerSum <= 21) {
+				System.out.println("You win!");
+			}
+		} else if ( dealerSum > playerSum) {
+			if (dealerSum > 21 ) {
+				System.out.println("You busted!");
+			} else if (playerSum > 21 ) {
+				System.out.println("Draw!");
+			}else if (dealerSum <= 21) {
+				System.out.println("You win!");
+			}
+		}else {
+			System.out.println("Draw!");
 		}
 	}
 
